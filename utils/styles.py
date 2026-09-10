@@ -26,27 +26,28 @@ footer {visibility: hidden;}
 .header-banner {
     background: linear-gradient(135deg, #1B365D 0%, #0F2C59 100%);
     color: #FFFFFF;
-    padding: 1.25rem 1.75rem;
+    padding: 1.35rem 1.75rem;
     border-radius: 12px;
     margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    min-height: 105px;
+    min-height: 110px;
 }
 
 .header-logo-box {
     background: #FFFFFF;
     border-radius: 9px;
-    padding: 8px 12px;
+    padding: 10px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
+    margin-top: 4px;
 }
 
 .header-logo {
-    width: 145px;
+    width: 135px;
     height: auto;
     display: block;
 }
