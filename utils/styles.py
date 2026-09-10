@@ -1,7 +1,5 @@
 import streamlit as st
 import os
-import base64
-
 
 def apply_custom_styles():
     st.markdown(
@@ -23,36 +21,12 @@ def apply_custom_styles():
             max-width: 96%;
         }
 
-        .header-banner {
+        .header-wrap {
             background: linear-gradient(135deg, #1B365D 0%, #0F2C59 100%);
             color: #FFF;
-            padding: 1.25rem 1.75rem;
+            padding: 1.2rem 1.5rem;
             border-radius: 12px;
             margin-bottom: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            min-width: 0;
-        }
-
-        .header-logo {
-            width: 145px;
-            height: auto;
-            object-fit: contain;
-            background-color: #FFFFFF;
-            padding: 8px 10px;
-            border-radius: 8px;
-            flex-shrink: 0;
-        }
-
-        .header-title-box {
-            min-width: 0;
         }
 
         .header-title-box h1 {
@@ -140,16 +114,14 @@ def apply_custom_styles():
             margin-top: 0.4rem;
         }
 
+        /* Ajustes del encabezado nativo de Streamlit */
+        div[data-testid="stImage"] img {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 6px 10px;
+        }
+
         @media (max-width: 800px) {
-            .header-brand {
-                align-items: flex-start;
-                gap: 0.9rem;
-            }
-
-            .header-logo {
-                width: 110px;
-            }
-
             .header-title-box h1 {
                 font-size: 1.25rem !important;
             }
@@ -165,37 +137,31 @@ def apply_custom_styles():
 
 
 def render_header(logo_path="assets/logo_itp.png"):
-    logo_html = ""
+    st.markdown('<div class="header-wrap">', unsafe_allow_html=True)
 
-    if os.path.exists(logo_path):
-        with open(logo_path, "rb") as image_file:
-            encoded_logo = base64.b64encode(image_file.read()).decode()
+    col_logo, col_title = st.columns([1, 6], vertical_alignment="center")
 
-        ext = os.path.splitext(logo_path)[1].lower().replace(".", "")
-        mime = "jpeg" if ext in ("jpg", "jpeg") else ext or "png"
+    with col_logo:
+        if os.path.exists(logo_path):
+            st.image(logo_path, width=150)
+        else:
+            st.markdown(
+                "<div style='color:#CBD5E1;font-size:0.8rem;'>Logo no disponible</div>",
+                unsafe_allow_html=True
+            )
 
-        logo_html = f"""
-            <img
-                src="data:image/{mime};base64,{encoded_logo}"
-                class="header-logo"
-                alt="Logo ITP Red CITE"
-            >
-        """
-
-    st.markdown(
-        f"""
-        <div class="header-banner">
-            <div class="header-brand">
-                {logo_html}
-                <div class="header-title-box">
-                    <h1>Seguimiento de Metas – Red CITE Pública</h1>
-                    <p>Consulta y análisis del avance de servicios y unidades productivas (UP)</p>
-                </div>
+    with col_title:
+        st.markdown(
+            """
+            <div class="header-title-box">
+                <h1>Seguimiento de Metas – Red CITE Pública</h1>
+                <p>Consulta y análisis del avance de servicios y unidades productivas (UP)</p>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 
 def render_kpi_card(title, value, subtext="", badge_type="neutral"):
